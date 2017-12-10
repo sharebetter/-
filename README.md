@@ -1,4 +1,4 @@
-# blog
+# 学习交流平台
 ### This is a blog project
 ## 技术栈：
   PHP Version 5.6.31、JQuery（1.110版本）、Html5，bootstrap(3.3.6版本) 官网地址：http://www.bootcss.com/
