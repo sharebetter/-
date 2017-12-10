@@ -1,4 +1,4 @@
-<?php 
+﻿<?php 
   include '../public/db.php';
   include '../public/same.php';
    session_start();
@@ -72,7 +72,7 @@
         <?php if(!isset($_SESSION['user_id'])){ echo "<script>location='index.php'</script>"; ?>        
         <?php }else{ echo "<input type='hidden' id='jmu'>"; ?>
           <h4>欢迎<a style='margin-left: 15px' href='info.php' class="login"> <?php echo $_SESSION['user_name']?><img class='head' <?php echo "src='{$_SESSION['img']}'" ?></a>
-           <a style='margin-left: 15px' class="login" id='loginOut' href="user/loginout.php"> 退出</a></h4>
+           <a style='margin-left: 15px' class="login" id='loginOut' href="loginout.php"> 退出</a></h4>
         <?php } ?> </div>
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-navbar" aria-expanded="false"> <span class="sr-only"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
@@ -117,7 +117,7 @@
                   <h1 class="page-header">个人中心</h1>
 				     <div class="headimg">
 
-                       <a title=""><img class="thumb" <?php echo "src='{$rows['img']}'"; ?> alt=""></a>
+                       <a title=""><img class="thumb" style="width: 120px;height: 120px;border-radius: 50%" <?php echo "src='{$rows['img']}'"; ?> alt=""></a>
                        <p style="margin-top:20px"></p>
                        <p>
                         <label for="">请选择文件:</label>			
@@ -127,11 +127,11 @@
 				       
 		            <div class="form-group" style='width: 30%;margin:10px auto 0' >
 						<label for="">用户名:</label>
-						<input type="text" class="form-control" name='username' required autofocus autocomplete="off" <?php echo "value='{$rows['username']}'"; ?>>
+						<input type="text" class="form-control" name='username' required autocomplete="off" <?php echo "value='{$rows['username']}'"; ?>>
 					</div>
 					<div class="form-group" style='width: 30%;margin:0 auto'>
 						<label for="">密码:</label>
-						<input type="password" class="form-control" name='password' required autofocus autocomplete="off" placeholder="请输入原密码或新密码">
+						<input type="password" class="form-control" name='password' required autocomplete="off" value="######">
 					</div>
 					<input type="hidden" name="id" value='<?php echo $rows['id']?>'>				
 					<input type="hidden" name="oldimg" <?php echo "value='{$rows['img']}'";?>>				

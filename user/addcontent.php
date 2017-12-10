@@ -6,7 +6,7 @@
    	exit;
    }
    $content=$_POST['conten'];
-   $topic_id=$_POST['topic_id'];
+   $topic_id=$_POST['topic_id'];  
    $userid=$_SESSION['user_id'];
    // echo $topic_id.$userid;
     $sql="insert into content (user_id,topic_id,user_content) values ('{$userid}','{$topic_id}','{$content}')";
@@ -23,6 +23,9 @@
     $rstviews=$pdo->prepare($sqlViews);
     $rstviews->execute();
     if($rst){
-    	echo "<script>window.location.href=document.referrer;</script>";
+      $arr = array ('status'=>0);     
+    }else{
+      $arr = array ('status'=>1);  
     }
+    echo json_encode($arr);
 ?>

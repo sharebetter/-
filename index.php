@@ -33,7 +33,7 @@
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ZHM博客</title>
+<title>学习交流平台</title>
 <link rel="stylesheet" type="text/css" href="public/bs/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="public/bs/css/nprogress.css">
 <link rel="stylesheet" type="text/css" href="public/bs/css/style.css">
@@ -87,7 +87,7 @@
         <?php if(!isset($_SESSION['user_id'])){ ?>
         <a data-toggle="modal" data-target="#loginModal" class="login" rel="nofollow">Hi,请登录</a>&nbsp;&nbsp;<a href='#mymodal' data-toggle='modal' class="register" rel="nofollow">我要注册</a>&nbsp;&nbsp;<a data-target="#passModal" data-toggle='modal' rel="nofollow">找回密码</a> 
         <?php }else{ echo "<input type='hidden' id='jmu'>"; ?>
-          <h4>欢迎<a style='margin-left: 15px' href='user/info.php' class="login"> <?php echo $_SESSION['user_name']?><img class='head' <?php echo "src='user/{$_SESSION['img']}'" ?></a>
+          <h4>欢迎<a style='margin-left: 15px' href='user/info.php' class="login"> <?php echo $_SESSION['user_name']?><img class='head' <?php echo "src='user/{$_SESSION['img']}'" ?></a><a hidden class="username"><?php echo $_SESSION['user_name']?></a>
            <a style='margin-left: 15px' class="login" id='loginOut' href="user/loginout.php"> 退出</a></h4>
         <?php } ?> </div>
       <div class="navbar-header">
@@ -122,7 +122,7 @@
   <div class="content-wrap">
     <div class="content">
       <div class="jumbotron">
-        <h1>欢迎访问ZHM博客</h1>
+        <h1>欢迎访问学习交流平台</h1>
         <p>在这里可以看到前端技术，后端程序，网站内容管理系统等文章，还有我的程序人生！</p>
       </div>
       <div id="focusslide" class="carousel slide" data-ride="carousel">
@@ -161,13 +161,14 @@
         </header>
         <p class="meta">
           <time class="time"><i class="glyphicon glyphicon-time"></i> <?php echo date('20y-m-d h:i:s',$row['time']); ?></time></br></br>
-          <span class="views"><i class="glyphicon glyphicon-eye-open"></i> 共<?php echo "{$row['views']}"; ?>人围观</span><span class="comment" data-toggle='modal'><i class="glyphicon glyphicon-comment"></i> 共<?php echo "{$row['comment_times']}"; ?>人评论</span>
+          <span class="views"><i class="glyphicon glyphicon-eye-open"></i> 共<span class="articleView"><?php echo "{$row['views']}"; ?></span>人围观</span><span class="comment" data-toggle='modal'><i class="glyphicon glyphicon-comment"></i> 共<span class="commentTimes"><?php echo "{$row['comment_times']}"; ?></span>条评论</span>
           </p></br>
           <a class="cat" href="javascript:">正文<i></i></a>
           <a class="img-responsive"><?php $str= htmlspecialchars_decode($row['content'])?></a>
           
         <p class="note"><?php $b=strlen($str);if(isset($_GET['id'])){echo $str;} elseif($b<5005){echo "<a href='index.php?id={$row['id']}' style='color:black'>".substr($str , 0 , 5005)."</a>";}else{echo "<a href='index.php?id={$row['id']}' style='color:black'>".substr($str , 0 , 5005)."</a>"."。。。<a style='float:right;margin-right:70px' href='index.php?id={$row['id']}'>点击查看更多>></a>";} ?></p>
-         <a class="cat" href="javascript:" style="margin-top: 15px">用户评论：<i></i><i class="glyphicon glyphicon-comment"></i><?php echo "{$row['comment_times']}" ?></a><span class='meta user_comment' style='margin-left: 10%;font-size: 14px'><a class="comment" <?php if(!isset($_SESSION['user_name'])){?> href='#loginModal' <?php } ?> data-toggle='modal'><i class="glyphicon glyphicon-comment"></i>点击评论</a></span>
+         <a class="cat" href="javascript:" style="margin-top: 15px">用户评论：<i></i><i class="glyphicon glyphicon-comment"></i><span class="commentTimes"><?php echo "{$row['comment_times']}" ?></span></a><span class='meta user_comment' style='margin-left: 10%;font-size: 14px'><a class="comment" <?php if(!isset($_SESSION['user_name'])){?> href='#loginModal' <?php } ?> data-toggle='modal'><i class="glyphicon glyphicon-comment"></i>点击评论</a></span>
+             <span class='userComment'>
              <?php 
                  $sqlContent = "select content.*,user.username,topic.id from content,user,topic where content.user_id=user.id and content.topic_id=topic.id and topic.id='{$row['id']}' limit 10";
                  $rstContent=$pdo->query($sqlContent);
@@ -175,14 +176,15 @@
                    echo "<p><strong>{$rowContent['username']} : </strong> {$rowContent['user_content']}</p>";
                  }
              ?>
+             </span>
             <div class="said">
-              <form action="user/addcontent.php" method="post"></br>              
+              <div></br>              
                 <input class="ipt form-control" type="text" name="conten" required autofocus autocomplete="off" />
                 <input type="hidden" name="topic_id" value="<?php echo $row['id'];?>"/>
-                <input type="submit" class="btn btn-primary" style="margin-top: 5px" value="提交评论" <?php if(!isset($_SESSION['user_name'])){ echo "disabled"; }?> /> 
+                <input type="button" class="btn btn-primary" style="margin-top: 5px" value="提交评论" <?php if(!isset($_SESSION['user_name'])){ echo "disabled"; }?> /> 
                   
-              </form>
-            </div>
+              </div>
+            </div>            
       </article>
       <?php
         }
@@ -250,7 +252,7 @@
         <?php 
          foreach($rowshot as $row){      
        ?>
-        <li><a href='index.php?<?php echo "id={$row['id']}"; ?>'><span class="thumbnail"><img class="thumb" data-original="images/excerpt.jpg" <?php echo "src='user/{$row['img']}'"; ?> alt=""></span><span class="text"><?php echo "{$row['title']}" ?> </span><span class="muted" style="display: block;line-height: 30px"><i class="glyphicon glyphicon-time"></i> <?php echo date('20y-m-d h:i:s',$row['time']); ?> </span><span class="muted"><i class="glyphicon glyphicon-eye-open"></i> <?php echo "{$row['views']}"; ?></span><span class="muted"><i class="glyphicon glyphicon-comment"></i> <?php echo "{$row['comment_times']}" ?></span></a></li>
+        <li><a href='index.php?<?php echo "id={$row['id']}"; ?>'><span class="thumbnail"><img class="thumb" <?php echo "src='user/{$row['img']}'"; ?> alt=""></span><span class="text"><?php echo "{$row['title']}" ?> </span><span class="muted" style="display: block;line-height: 30px"><i class="glyphicon glyphicon-time"></i> <?php echo date('20y-m-d h:i:s',$row['time']); ?> </span><span class="muted"><i class="glyphicon glyphicon-eye-open"></i> <?php echo "{$row['views']}"; ?></span><span class="muted"><i class="glyphicon glyphicon-comment"></i> <?php echo "{$row['comment_times']}" ?></span></a></li>
         <?php } ?>
       </ul>
     </div>
@@ -403,9 +405,9 @@
 <!--右键菜单列表-->
 <!-- <div id="rightClickMenu">
   <ul class="list-group rightClickMenuList">
-    <li class="list-group-item disabled">欢迎访问异清轩博客</li>
-    <li class="list-group-item"><span>IP：</span>172.16.10.129</li>
-    <li class="list-group-item"><span>地址：</span>河南省郑州市</li>
+    <li class="list-group-item disabled">欢迎访问学习交流平台</li>
+    <li class="list-group-item"><span>IP：</span>172.21.10.251</li>
+    <li class="list-group-item"><span>地址：</span>福建省厦门市</li>
     <li class="list-group-item"><span>系统：</span>Windows10 </li>
     <li class="list-group-item"><span>浏览器：</span>Chrome47</li>
   </ul>
@@ -418,15 +420,15 @@
   $(function(){
       var oSaid=$('.excerpt .said');
       var oCom=$('.excerpt .user_comment .comment');
-      var oIput=$('.ipt');    
+      var oIput=$('.ipt');  
+      var index=0;
       oCom.click(function(){
-        var index=$(this).index('.excerpt .user_comment .comment');
-      console.log(index)
+        index=$(this).index('.excerpt .user_comment .comment');
         oSaid.stop().hide(800);        
         oSaid.eq(index).stop().toggle(800);
         oIput[index].focus();        
       })
-
+       
      $('#loginOut').click(function(){
        cf=confirm('您确定退出吗?');
       if(!cf){
@@ -434,19 +436,60 @@
       }
      })
     if(!(document.getElementById('jmu'))){     
-    $('.jumbotron').slideDown(1000);
-    var timer=setTimeout(function(){
-        $('.jumbotron').stop().slideUp(1000);
-    },2500);
-     $('.jumbotron').mouseover(function(){
-        clearTimeout(timer);   
-       $('.jumbotron').stop().slideDown(1000);
-     }).bind('mouseleave',function(){
-       var timer=setTimeout(function(){
-        $('.jumbotron').stop().slideUp(1000);
-       },2500);
-     })
+        $('.jumbotron').slideDown(1000);
+        var timer=setTimeout(function(){
+            $('.jumbotron').stop().slideUp(1000);
+        },2500);
+         $('.jumbotron').mouseover(function(){
+            clearTimeout(timer);   
+           $('.jumbotron').stop().slideDown(1000);
+         }).bind('mouseleave',function(){
+           var timer=setTimeout(function(){
+            $('.jumbotron').stop().slideUp(1000);
+           },2500);
+         })
+    }
+    $('.ipt').keydown(function(event){
+      if(event.keyCode == '13'){
+        addComment($('.said .btn').eq(index))
+        //console.log($('.said .btn').eq(index))
       }
+    })
+    $('.said .btn').click(function(){      
+       addComment($(this))
+       //console.log($(this))
+    })   
+    function addComment(_this){ 
+      var a=_this.prev().val();
+      var b = _this.prevAll().filter(".ipt").val();
+      if(b==''){
+
+      }else{
+        $.ajax({
+          url: 'user/addcontent.php',
+          type:'POST',
+          data:{
+            'topic_id': a,
+            'conten':b
+          },
+          success:function(res){
+             var result=JSON.parse(res)
+             if(result.status==0){
+               var content = $('.userComment').eq(index).html();
+               // $('.userComment').eq(index).html(content+`<p><strong> ${$('.username').html()}: </strong> ${b}</p>`);
+               //es6 语法 手机端无法识别
+               $('.userComment').eq(index).html(content+"<p><strong> "+$('.username').html()+": </strong>"+ b +"</p>");
+               $('.commentTimes').eq(index*2).html(Number($('.commentTimes').eq(index*2).html())+1)
+               $('.commentTimes').eq(index*2+1).html(Number($('.commentTimes').eq(index*2+1).html())+1)
+               $('.articleView').eq(index).html(Number($('.articleView').eq(index).html())+1)
+               $('.ipt').val('')
+             }
+          }
+
+        })     
+      }     
+        
+    }
 })
 </script>
 

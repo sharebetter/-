@@ -46,7 +46,9 @@ html::-webkit-scrollbar-thumb:hover {
 .article:hover{    
 	border:1px solid #3DE6F6;
 }
-
+img{
+	max-width: 100%;
+}
 a {
 	cursor: pointer;
 	text-decoration: none;

@@ -1,4 +1,4 @@
-<?php 
+﻿<?php 
 include '../public/db.php';
 session_start();
 //图片上传;
@@ -33,12 +33,25 @@ if($_FILES['img']['tmp_name']){
  }
   $user_id=$_POST['id'];
   $username = $_POST['username'];
-  $password = md5($_POST['password']);
+  $password = $_POST['password'];
+  $change=false;  	
+  if($password!="######"){
+    $password = md5($_POST['password']);
+    $change=true;  	
+  }
   $oldimg=$_POST['oldimg'];
   if(!isset($dfile)){
-	 $sql="update user set username='{$username}',password='{$password}' where id={$user_id}";	  
+  	 if($change){
+	  $sql="update user set username='{$username}',password='{$password}' where id={$user_id}";	    	 	
+  	 }else{
+	  $sql="update user set username='{$username}' where id={$user_id}";	    	 	  	
+	 }
   }else{
-	 $sql="update user set username='{$username}',password='{$password}',img='{$dfile}' where id={$user_id}";
+  	if($change){
+  		$sql="update user set username='{$username}',password='{$password}',img='{$dfile}' where id={$user_id}";
+  	}else{
+       $sql="update user set username='{$username}',img='{$dfile}' where id={$user_id}";
+  	}	
      $_SESSION['img']=$dfile;        
      unlink($oldimg);
   }

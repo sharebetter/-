@@ -13,7 +13,7 @@
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ZHM博客</title>
+<title>学习交流平台</title>
 <link rel="stylesheet" type="text/css" href="public/bs/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="public/bs/css/nprogress.css">
 <link rel="stylesheet" type="text/css" href="public/bs/css/style.css">
